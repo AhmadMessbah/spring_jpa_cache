@@ -1,0 +1,17 @@
+mvn compile
+
+mvn test
+
+mvn package
+
+mvn clean
+
+mvn install
+
+mvn deploy
+
+mvn clean package
+
+java -jar target/spring_jpa_cache-0.0.1-SNAPSHOT.jar
+mvn spring-boot:run
+

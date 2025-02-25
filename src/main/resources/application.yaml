@@ -63,7 +63,7 @@ spring:
 
 # Common settings
 server:
-  port: 8080
+  port: 80
 management:
   endpoints:
     web:

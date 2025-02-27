@@ -8,7 +8,7 @@ services:
         condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/springdb1
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/springdb
       - SPRING_DATASOURCE_USERNAME=mft
       - SPRING_DATASOURCE_PASSWORD=mft123
 #    entrypoint: ["/bin/sh", "-c", "sleep 10 && exec java -jar /app.jar"]  # Add delay
@@ -19,7 +19,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=springdb1
+      - POSTGRES_DB=springdb
       - POSTGRES_USER=mft
       - POSTGRES_PASSWORD=mft123
     volumes:

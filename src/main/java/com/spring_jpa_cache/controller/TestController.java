@@ -17,6 +17,7 @@ public class TestController {
         return ResponseEntity.ok("This is a public endpoint, no authentication required.");
     }
 
+//    @PreAuthorize("#userId == principal.id") // فقط اگه userId با ID کاربر فعلی برابر باشه
     // مسیر فقط برای کاربران با نقش ROLE_USER یا بالاتر
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER')")

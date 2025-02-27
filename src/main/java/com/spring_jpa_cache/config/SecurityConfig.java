@@ -70,10 +70,12 @@ public class SecurityConfig {
                                     "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self'; img-src 'self'; frame-ancestors 'self';"))
                             .addHeaderWriter(new StaticHeadersWriter("X-Content-Type-Options", "nosniff"))
                             .addHeaderWriter(new StaticHeadersWriter("X-XSS-Protection", "1; mode=block"))
+                            .addHeaderWriter(new StaticHeadersWriter("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0"))
+                            .addHeaderWriter(new StaticHeadersWriter("Pragma", "no-cache"))
+                            .addHeaderWriter(new StaticHeadersWriter("Expires", "0"))
                             .defaultsDisabled();
-                    // شرطی کردن frameOptions بر اساس پروفایل
                     if (isDevProfile) {
-                        headers.frameOptions(frame -> frame.disable()); // برای H2 Console توی dev
+                        headers.frameOptions(frame -> frame.disable());
                     } else {
                         headers.frameOptions(frame -> frame.sameOrigin())
                                 .addHeaderWriter(new StaticHeadersWriter("Strict-Transport-Security", "max-age=31536000; includeSubDomains"));
@@ -146,7 +148,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://localhost:8080"));
+        configuration.setAllowedOrigins(List.of("https://localhost:8443"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
         configuration.setExposedHeaders(List.of("Authorization"));

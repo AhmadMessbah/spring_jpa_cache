@@ -9,6 +9,13 @@ spring:
     resources:
       static-locations: classpath:/static/
 
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+
 # Production profile (PostgreSQL)
 ---
 spring:

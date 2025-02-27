@@ -2,7 +2,7 @@ services:
   spring_jpa_cache:
     build: .
     ports:
-      - "8081:8081"
+      - "8443:8443"
     depends_on:
       postgres:
         condition: service_healthy

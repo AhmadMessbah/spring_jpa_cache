@@ -2,12 +2,17 @@ package com.spring_jpa_cache.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@NoArgsConstructor
 @Data
+@SuperBuilder
+
+@Entity
 @Table(name = "roles")
 public class Role {
     @Id

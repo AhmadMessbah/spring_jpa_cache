@@ -4,8 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
 
-@Embeddable
 @Data
+
+@Embeddable
 public class Address {
     @Column(name = "street")
     private String street;

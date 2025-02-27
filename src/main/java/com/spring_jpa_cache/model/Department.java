@@ -2,12 +2,17 @@ package com.spring_jpa_cache.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.io.Serializable;
 
-@Entity
+@NoArgsConstructor
 @Data
+@SuperBuilder
+
+@Entity
 @Table(name = "departments")
 @SQLRestriction("deleted = false")
 public class Department implements Serializable {

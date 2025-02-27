@@ -23,7 +23,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:postgresql://postgres:5432/springdb
+    url: jdbc:postgresql://postgres:5432/springdb1
     username: mft
     password: mft123
     driver-class-name: org.postgresql.Driver

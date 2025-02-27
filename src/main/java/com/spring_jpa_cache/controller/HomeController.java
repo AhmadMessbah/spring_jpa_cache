@@ -16,20 +16,20 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/user")
-    public String userPage() {
-        return "user";
-    }
-
-    @GetMapping("/admin")
-    public String adminPage() {
-        return "admin";
-    }
-
-    @GetMapping("/write")
-    public String writePage() {
-        return "write";
-    }
+//    @GetMapping("/user")
+//    public String userPage() {
+//        return "user";
+//    }
+//
+//    @GetMapping("/admin")
+//    public String adminPage() {
+//        return "admin";
+//    }
+//
+//    @GetMapping("/write")
+//    public String writePage() {
+//        return "write";
+//    }
 
     @GetMapping("/login")
     public String login() {

@@ -1,8 +1,9 @@
+# Common application settings
 spring:
   application:
     name: spring_jpa_cache
   profiles:
-    active: dev  # Default profile is prod (PostgreSQL)
+    active: dev  # Default profile (can be overridden with --spring.profiles.active)
 
 # Production profile (PostgreSQL)
 ---
@@ -16,26 +17,25 @@ spring:
     password: mft123
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10
-      connection-timeout: 30000
-      initialization-fail-timeout: 0
+      maximum-pool-size: 10        # Max connections in pool
+      connection-timeout: 30000    # 30 seconds timeout
+      initialization-fail-timeout: 0  # No fail on init
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update           # Update schema in production
     show-sql: true
     properties:
       hibernate:
-        jdbc:
-          batch_size: 50
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         use_sql_comments: true
+        jdbc:
+          batch_size: 50          # Batch size for performance
   cache:
-    type: simple
+    type: simple                 # Simple in-memory cache
   h2:
     console:
-      enabled: false
-
+      enabled: false             # Disable H2 console in prod
 
 # Development/Testing profile (H2)
 ---
@@ -50,7 +50,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create-drop      # Recreate schema for dev/testing
     show-sql: true
     properties:
       hibernate:
@@ -58,15 +58,15 @@ spring:
         format_sql: true
         use_sql_comments: true
   cache:
-    type: simple
+    type: simple                 # Simple in-memory cache
   h2:
     console:
-      enabled: true
+      enabled: true              # Enable H2 console for dev
       path: /h2-console
 
-# Common settings
+# Common server and security settings
 server:
-  port: 8443
+  port: 8443                     # HTTPS port
   ssl:
     key-store: classpath:keystore.jks
     key-store-password: java123
@@ -74,33 +74,30 @@ server:
     key-store-type: JKS
   servlet:
     session:
-      timeout: 15m
+      timeout: 15m               # Session timeout after 15 minutes
       cookie:
-        http-only: true
-        secure: true
-        same-site: strict
+        http-only: true          # Prevent JS access to cookies
+        secure: true             # Only over HTTPS
+        same-site: strict        # Prevent CSRF via cross-site requests
 
-security:
-  require-ssl : true
-
+# Management endpoints (Actuator)
 management:
   endpoints:
     web:
       exposure:
-        include: health,metrics,prometheus
+        include: health,metrics,prometheus  # Expose useful endpoints
 
 # Logging configuration
 logging:
   level:
     root: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
-    org.hibernate.orm.jdbc.extract: TRACE
-    org.hibernate.engine.transaction: DEBUG
-    com.zaxxer.hikari: DEBUG
-    org.springframework.jdbc: DEBUG
-    org.springframework.transaction: DEBUG
+    org.springframework.security: DEBUG  # Debug Spring Security
+    org.hibernate.SQL: DEBUG            # Show SQL queries
+    org.hibernate.orm.jdbc.bind: TRACE  # Show parameter binding
+    org.hibernate.orm.jdbc.extract: TRACE  # Show result extraction
+    org.hibernate.engine.transaction: DEBUG  # Transaction details
+    com.zaxxer.hikari: DEBUG           # HikariCP pool details
+    org.springframework.jdbc: DEBUG    # JDBC operations
+    org.springframework.transaction: DEBUG  # Transaction management
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-
-

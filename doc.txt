@@ -1,3 +1,11 @@
+psql -U postgres -h localhost
+
+CREATE DATABASE userdb;
+CREATE USER mft WITH PASSWORD 'mft123';
+GRANT ALL PRIVILEGES ON DATABASE springdb TO mft;
+\q
+-------------------------------------------
+
 mvn compile
 
 mvn test
@@ -15,3 +23,6 @@ mvn clean package
 java -jar target/spring_jpa_cache-0.0.1-SNAPSHOT.jar
 mvn spring-boot:run
 
+docker save -o spring_jpa_cache.tar spring_jpa_cache
+
+docker load -i spring_jpa_cache.tar

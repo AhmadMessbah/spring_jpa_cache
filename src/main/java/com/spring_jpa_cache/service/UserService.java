@@ -1,13 +1,16 @@
 package com.spring_jpa_cache.service;
 
 import com.spring_jpa_cache.model.User;
+import com.spring_jpa_cache.repository.RoleRepository;
 import com.spring_jpa_cache.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,11 +18,18 @@ import java.util.List;
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
-    private final DepartmentService departmentService;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User saveUser(User user) {
+    public User save(User user) {
         logger.info("Saving user: {}", user.getUsername());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
+        user.setCredentialsExpiryDate(LocalDateTime.now().plusMonths(6));
         User saved = userRepository.save(user);
         logger.info("User saved with ID: {}", saved.getId());
         return saved;

@@ -14,12 +14,12 @@ class UserServiceApplicationTests {
     private UserService userService;
 
     @Test
-    void shouldSaveUser() throws InterruptedException {
+    void shouldSave() throws InterruptedException {
         User user = new User();
         user.setUsername("Test User");
         user.setPassword("test@example.com");
 
-        User savedUser = userService.saveUser(user);
+        User savedUser = userService.save(user);
 
         assertThat(savedUser.getId()).isNotNull();
         assertThat(savedUser.getUsername()).isEqualTo("Test User");

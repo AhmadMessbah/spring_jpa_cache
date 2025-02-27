@@ -15,4 +15,16 @@ Requirements :
 
 
     Build Jar :
-        - In Terminal : mvn clean package
+          mvn clean package
+
+    Run Docker:
+          docker-compose up --build
+
+    Access Database :
+          docker exec -it <postgres-container-name> psql -U mft -d springdb
+
+        - Find postgres-container-name :
+          postgres-container-name
+
+    Stop Docker:
+        - docker-compose down

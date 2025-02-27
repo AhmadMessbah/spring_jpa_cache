@@ -5,6 +5,10 @@ spring:
   profiles:
     active: dev  # Default profile (can be overridden with --spring.profiles.active)
 
+  web:
+    resources:
+      static-locations: classpath:/static/
+
 # Production profile (PostgreSQL)
 ---
 spring:

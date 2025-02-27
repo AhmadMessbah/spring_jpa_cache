@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id=form" action="get">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="text" id="name" name="name" value="">
+    <input type="submit">
+</form>
+
+<h3 id="text"></h3>
+
+<script>
+    document.getElementById('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const text = document.getElementById("text");
+        text.innerText = "Asd";
+    });
+</script>
+</body>
+</html>

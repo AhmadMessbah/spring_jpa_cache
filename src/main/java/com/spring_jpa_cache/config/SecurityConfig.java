@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -14,9 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
@@ -27,7 +30,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
 
     @Bean
@@ -40,11 +43,10 @@ public class SecurityConfig {
 
                 // 2. XSS Protection
                 .headers(headers -> headers
-                        .contentSecurityPolicy(contentSecurityPolicyConfig -> contentSecurityPolicyConfig
-                                .policyDirectives("script-src 'self'; object-src 'none';")
+                        .addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy","script-src 'self'; object-src 'none';")
                         )
                         // 3. Clickjacking Protection
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                        .frameOptions(frame -> frame.sameOrigin())
                 )
 
                 // 4. Session Hijacking Protection
@@ -73,7 +75,6 @@ public class SecurityConfig {
                 .requiresChannel(requiresChannel -> requiresChannel
                         .anyRequest().requiresSecure()
                 );
-
         return http.build();
     }
 

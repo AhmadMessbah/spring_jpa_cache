@@ -1,5 +1,6 @@
 package com.spring_jpa_cache.service;
 
+import com.spring_jpa_cache.model.Role;
 import com.spring_jpa_cache.model.User;
 import com.spring_jpa_cache.repository.RoleRepository;
 import com.spring_jpa_cache.repository.UserRepository;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,11 @@ public class UserService {
     public User save(User user) {
         logger.info("Saving user: {}", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> roles = user.getRoles().stream()
+                .map(role -> roleRepository.findByName(role.getName())
+                        .orElseThrow(() -> new IllegalArgumentException("Role not found: " + role.getName())))
+                .collect(Collectors.toSet());
+        user.setRoles(roles);
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);

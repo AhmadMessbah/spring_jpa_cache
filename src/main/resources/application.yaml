@@ -36,6 +36,7 @@ spring:
     console:
       enabled: false
 
+
 # Development/Testing profile (H2)
 ---
 spring:
@@ -65,7 +66,23 @@ spring:
 
 # Common settings
 server:
-  port: 80
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.jks
+    key-store-password: java123
+    key-alias: myalias
+    key-store-type: JKS
+  servlet:
+    session:
+      timeout: 15m
+      cookie:
+        http-only: true
+        secure: true
+        same-site: strict
+
+security:
+  require-ssl : true
+
 management:
   endpoints:
     web:
@@ -85,3 +102,5 @@ logging:
     org.springframework.transaction: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+

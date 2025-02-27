@@ -26,3 +26,27 @@ mvn spring-boot:run
 docker save -o spring_jpa_cache.tar spring_jpa_cache
 
 docker load -i spring_jpa_cache.tar
+
+
+------------------------------------------------
+
+SSL Certificate
+
+keytool -genkeypair -alias myalias -keyalg RSA -keysize 2048 -storetype JKS -keystore keystore.jks -validity 365 -ext SAN=dns:localhost,ip:127.0.0.1
+
+password : java123
+ahmad messbah
+mft
+mft
+tehran
+tehran
+ir
+
+-genkeypair: یه جفت کلید عمومی/خصوصی می‌سازه.
+-alias myalias: یه نام مستعار برای گواهی.
+-keyalg RSA: الگوریتم رمزنگاری RSA.
+-keysize 2048: اندازه کلید (امنیت خوب).
+-storetype JKS: فرمت فایل Keystore (Java KeyStore).
+-keystore keystore.jks: نام فایل خروجی.
+-validity 365: اعتبار گواهی برای 365 روز.
+-ext SAN=dns:localhost,ip:127.0.0.1: برای کار روی localhost

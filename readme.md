@@ -21,7 +21,7 @@ Requirements :
           docker-compose up --build
 
     Access Database :
-          docker exec -it <postgres-container-name> psql -U mft -d springdb
+          docker exec -it <postgres-container-name> psql -U mft -d spring_db
 
         - Find postgres-container-name :
           postgres-container-name

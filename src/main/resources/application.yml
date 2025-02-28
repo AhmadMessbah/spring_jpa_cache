@@ -3,7 +3,7 @@ spring:
   application:
     name: spring_jpa_cache
   profiles:
-    active: dev  # Default profile (can be overridden with --spring.profiles.active)
+    active: prod  # Default profile (can be overridden with --spring.profiles.active)
 
   web:
     resources:
@@ -23,7 +23,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:postgresql://postgres:5432/springdb
+    url: jdbc:postgresql://postgres:5432/spring_db
     username: mft
     password: mft123
     driver-class-name: org.postgresql.Driver
@@ -42,11 +42,16 @@ spring:
         use_sql_comments: true
         jdbc:
           batch_size: 50          # Batch size for performance
+  data:
+    mongodb:
+      host: mongo
+      port: 27017
+      database: spring_db_photos
+    redis:
+      host: redis
+      port: 6379
   cache:
-    type: simple                 # Simple in-memory cache
-  h2:
-    console:
-      enabled: false             # Disable H2 console in prod
+      type: redis
 
 # Development/Testing profile (H2)
 ---
@@ -55,7 +60,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:mem:springdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:spring_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password: ""
     driver-class-name: org.h2.Driver
@@ -68,8 +73,16 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
         use_sql_comments: true
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: spring_db_photos
+    redis:
+      host: localhost
+      port: 6379
   cache:
-    type: simple                 # Simple in-memory cache
+    type: redis
   h2:
     console:
       enabled: true              # Enable H2 console for dev

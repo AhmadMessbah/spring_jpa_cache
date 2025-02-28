@@ -7,7 +7,7 @@ psql -U postgres -h localhost
 
 CREATE DATABASE userdb;
 CREATE USER mft WITH PASSWORD 'mft123';
-GRANT ALL PRIVILEGES ON DATABASE springdb TO mft;
+GRANT ALL PRIVILEGES ON DATABASE spring_db TO mft;
 \q
 -------------------------------------------
 

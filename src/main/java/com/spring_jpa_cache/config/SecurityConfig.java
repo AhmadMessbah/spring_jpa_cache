@@ -93,7 +93,7 @@ public class SecurityConfig {
 
                 // 5. Authorization Rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","css/**", "/h2-console/**", "/public/**").permitAll()
+                        .requestMatchers("/login","/css/**", "/h2-console/**", "/public/**").permitAll()
                         .requestMatchers("/user/profile/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/data").hasAuthority("READ_DATA")

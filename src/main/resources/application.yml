@@ -79,7 +79,7 @@ spring:
 server:
   port: 8443                     # HTTPS port
   ssl:
-    key-store: classpath:keystore.jks
+    key-store: classpath:/ssl/keystore.jks
     key-store-password: java123
     key-alias: myalias
     key-store-type: JKS
@@ -102,13 +102,23 @@ management:
 logging:
   level:
     root: INFO
+    com.spring_jpa_cache: DEBUG
     org.springframework.security: DEBUG  # Debug Spring Security
     org.hibernate.SQL: DEBUG            # Show SQL queries
     org.hibernate.orm.jdbc.bind: TRACE  # Show parameter binding
     org.hibernate.orm.jdbc.extract: TRACE  # Show result extraction
+    org.springframework.transaction: DEBUG  # Transaction management
     org.hibernate.engine.transaction: DEBUG  # Transaction details
     com.zaxxer.hikari: DEBUG           # HikariCP pool details
+    com.zaxxer.hikari.pool: TRACE      # HikariCP pool more details
     org.springframework.jdbc: DEBUG    # JDBC operations
-    org.springframework.transaction: DEBUG  # Transaction management
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
+  file:
+    name: logs/application.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7

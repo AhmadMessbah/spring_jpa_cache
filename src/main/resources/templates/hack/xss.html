@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form id=form" action="get">
+<form id=form" method="get">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <input type="text" id="name" name="name" value="">
     <input type="submit">

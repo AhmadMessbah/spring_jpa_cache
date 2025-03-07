@@ -1,15 +1,19 @@
+version: '3.8'
+
 services:
   spring_jpa_cache:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile  # فرض بر اینه که Dockerfile دارید
     ports:
-      - "8443:8443"
+      - "8443:8443"         # پورت اپلیکیشن (HTTPS)
     depends_on:
       postgres:
-        condition: service_started
+        condition: service_started  # منتظر شروع PostgreSQL
       mongodb:
-        condition: service_healthy
+        condition: service_healthy  # منتظر سالم بودن MongoDB
       redis:
-        condition: service_started
+        condition: service_started  # منتظر شروع Redis
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/spring_db
@@ -17,45 +21,51 @@ services:
       - SPRING_DATASOURCE_PASSWORD=mft123
       - SPRING_DATA_MONGODB_HOST=mongodb
       - SPRING_DATA_REDIS_HOST=redis
+    volumes:
+      - app-logs:/app/logs  # ولوم جدا برای لاگ‌های اپلیکیشن
     entrypoint: ["/bin/sh", "-c", "sleep 30 && exec java -jar /app.jar"]
-    restart: on-failure
+    restart: on-failure     # خودکار ری‌استارت در صورت خطا
 
   postgres:
     image: postgres:latest
     ports:
-      - "5432:5432"
+      - "5432:5432"         # پورت PostgreSQL
     environment:
       - POSTGRES_DB=spring_db
       - POSTGRES_USER=mft
       - POSTGRES_PASSWORD=mft123
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data  # ولوم ثابت برای داده‌ها
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U mft -d spring_db"]
       interval: 5s
       timeout: 5s
       retries: 10
+    restart: unless-stopped # خودکار ری‌استارت مگر اینکه دستی متوقف بشه
 
   mongodb:
     image: mongo:latest
     ports:
-      - "27017:27017"
+      - "27017:27017"       # پورت MongoDB
     volumes:
-      - mongodb-data:/data/db
+      - mongodb-data:/data/db  # ولوم ثابت برای داده‌ها
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.runCommand('ping').ok"]
       interval: 5s
       timeout: 5s
       retries: 10
+    restart: unless-stopped # خودکار ری‌استارت مگر اینکه دستی متوقف بشه
 
   redis:
     image: redis:latest
     ports:
-      - "6379:6379"
+      - "6379:6379"         # پورت Redis
     volumes:
-      - redis-data:/data
+      - redis-data:/data    # ولوم ثابت برای داده‌ها
+    restart: unless-stopped # خودکار ری‌استارت مگر اینکه دستی متوقف بشه
 
 volumes:
-  postgres-data:
-  mongodb-data:
-  redis-data:
+  postgres-data:           # ولوم دائمی برای PostgreSQL
+  mongodb-data:            # ولوم دائمی برای MongoDB
+  redis-data:              # ولوم دائمی برای Redis
+  app-logs:                # ولوم دائمی برای لاگ‌های اپلیکیشن

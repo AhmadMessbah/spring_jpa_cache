@@ -16,17 +16,17 @@ import java.util.Set;
 
 @SpringBootApplication
 public class SpringJpaCacheApplication {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PermissionRepository permissionRepository;
-    private final UserService userService;
+        private final UserRepository userRepository;
+        private final RoleRepository roleRepository;
+        private final PermissionRepository permissionRepository;
+        private final UserService userService;
 
-    public SpringJpaCacheApplication(UserRepository userRepository, RoleRepository roleRepository, PermissionRepository permissionRepository, UserService userService) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.permissionRepository = permissionRepository;
-        this.userService = userService;
-    }
+        public SpringJpaCacheApplication(UserRepository userRepository, RoleRepository roleRepository, PermissionRepository permissionRepository, UserService userService) {
+            this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
+            this.permissionRepository = permissionRepository;
+            this.userService = userService;
+        }
 
     public static void main(String[] args) {
         SpringApplication.run(SpringJpaCacheApplication.class, args);

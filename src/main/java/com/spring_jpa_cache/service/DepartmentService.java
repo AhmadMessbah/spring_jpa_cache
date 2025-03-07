@@ -20,14 +20,14 @@ public class DepartmentService {
     private static final Logger logger = LoggerFactory.getLogger(DepartmentService.class);
     private final DepartmentRepository departmentRepository;
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         logger.info("Initializing department cache on startup");
         getAllDepartments();
         logger.info("Department cache initialization completed");
     }
 
-    @Cacheable(value = "departments")
+//    @Cacheable(value = "departments")
     @Transactional(readOnly = true)
     public List<Department> getAllDepartments() {
         logger.debug("Fetching all departments from database");
@@ -37,7 +37,7 @@ public class DepartmentService {
     }
 
     @Transactional
-    @CacheEvict(value = "departments", allEntries = true)
+//    @CacheEvict(value = "departments", allEntries = true)
     public Department saveDepartment(Department department) {
         logger.info("Saving department: {}", department.getName());
         Department saved = departmentRepository.save(department);

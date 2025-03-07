@@ -1,7 +1,5 @@
-1- Docker
-    -
 
-
+docker-compose up -d postgres
 
 psql -U postgres -h localhost
 

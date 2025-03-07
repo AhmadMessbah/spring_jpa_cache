@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.io.Serializable;
 
@@ -14,7 +13,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "departments")
-@SQLRestriction("deleted = false")
+//@SQLRestriction("deleted = false")
 public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +22,8 @@ public class Department implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Embedded
-    private Address address;
+//    @Embedded
+//    private Address address;
 
     private String description;
 

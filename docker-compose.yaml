@@ -5,7 +5,7 @@ services:
       - "8443:8443"
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_started
       mongodb:
         condition: service_healthy
       redis:
@@ -15,10 +15,13 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/spring_db
       - SPRING_DATASOURCE_USERNAME=mft
       - SPRING_DATASOURCE_PASSWORD=mft123
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_REDIS_HOST=redis
+    entrypoint: ["/bin/sh", "-c", "sleep 30 && exec java -jar /app.jar"]
     restart: on-failure
 
   postgres:
-    image: postgres:15
+    image: postgres:latest
     ports:
       - "5432:5432"
     environment:

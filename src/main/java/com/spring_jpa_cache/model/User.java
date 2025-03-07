@@ -34,9 +34,9 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DEPARTMENT_ID")
-    private Department department;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "department_id")
+//    private Department department;
 
     @Column(name = "account_non_expired")
     private boolean accountNonExpired = true;

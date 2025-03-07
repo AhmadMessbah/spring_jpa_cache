@@ -3,12 +3,10 @@ spring:
   application:
     name: spring_jpa_cache
   profiles:
-    active: prod  # Default profile (can be overridden with --spring.profiles.active)
-
+    active: prod  # Default profile, override with --spring.profiles.active
   web:
     resources:
       static-locations: classpath:/static/
-
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
@@ -16,7 +14,7 @@ spring:
     mode: HTML
     encoding: UTF-8
 
-# Production profile (PostgreSQL)
+# Production profile (PostgreSQL, MongoDB, Redis)
 ---
 spring:
   config:
@@ -28,20 +26,19 @@ spring:
     password: mft123
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10        # Max connections in pool
-      connection-timeout: 30000    # 30 seconds timeout
-      initialization-fail-timeout: 0  # No fail on init
+      minimum-idle: 1
+      maximum-pool-size: 5
+      connection-timeout: 30000  # 30 seconds
+      idle-timeout: 60000        # 1 minute
+      max-lifetime: 1800000      # 30 minutes
   jpa:
-    hibernate:
-      ddl-auto: update           # Update schema in production
-    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        use_sql_comments: true
-        jdbc:
-          batch_size: 50          # Batch size for performance
+        ddl-auto: create         # Update schema on startup
+        format_sql: true         # Format SQL in logs
+        show_sql: true           # Show SQL in logs
+        temp.use_jdbc_metadata_defaults: false
   data:
     mongodb:
       host: mongo
@@ -51,9 +48,9 @@ spring:
       host: redis
       port: 6379
   cache:
-      type: redis
+    type: redis
 
-# Development/Testing profile (H2)
+# Development/Testing profile (H2, MongoDB, Redis)
 ---
 spring:
   config:
@@ -66,7 +63,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop      # Recreate schema for dev/testing
+      ddl-auto: create-drop    # Recreate schema for dev/testing
     show-sql: true
     properties:
       hibernate:
@@ -85,12 +82,12 @@ spring:
     type: redis
   h2:
     console:
-      enabled: true              # Enable H2 console for dev
+      enabled: true            # Enable H2 console
       path: /h2-console
 
-# Common server and security settings
+# Server and security settings
 server:
-  port: 8443                     # HTTPS port
+  port: 8443                  # HTTPS port
   ssl:
     key-store: classpath:/ssl/keystore.jks
     key-store-password: java123
@@ -98,40 +95,38 @@ server:
     key-store-type: JKS
   servlet:
     session:
-      timeout: 15m               # Session timeout after 15 minutes
+      timeout: 15m            # Session timeout: 15 minutes
       cookie:
-        http-only: true          # Prevent JS access to cookies
-        secure: true             # Only over HTTPS
-        same-site: strict        # Prevent CSRF via cross-site requests
+        http-only: true       # Prevent JS access
+        secure: true          # HTTPS only
+        same-site: strict     # Prevent CSRF
 
 # Management endpoints (Actuator)
 management:
   endpoints:
     web:
       exposure:
-        include: health,metrics,prometheus  # Expose useful endpoints
+        include: health,metrics,prometheus  # Exposed endpoints
 
 # Logging configuration
 logging:
   level:
     root: INFO
-    com.spring_jpa_cache: DEBUG
-    org.springframework.security: DEBUG  # Debug Spring Security
-    org.hibernate.SQL: DEBUG            # Show SQL queries
-    org.hibernate.orm.jdbc.bind: TRACE  # Show parameter binding
-    org.hibernate.orm.jdbc.extract: TRACE  # Show result extraction
-    org.springframework.transaction: DEBUG  # Transaction management
-    org.hibernate.engine.transaction: DEBUG  # Transaction details
-    com.zaxxer.hikari: DEBUG           # HikariCP pool details
-    com.zaxxer.hikari.pool: TRACE      # HikariCP pool more details
-    org.springframework.jdbc: DEBUG    # JDBC operations
+  #    com.spring_jpa_cache: DEBUG
+  #    org.springframework.security: DEBUG
+  #    org.hibernate.SQL: DEBUG
+  #    org.hibernate.orm.jdbc.bind: TRACE
+  #    org.hibernate.orm.jdbc.extract: TRACE
+  #    org.springframework.transaction: DEBUG
+  #    org.hibernate.engine.transaction: DEBUG
+  #    com.zaxxer.hikari: DEBUG
+  #    com.zaxxer.hikari.pool: TRACE
+  #    org.springframework.jdbc: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-
-
   file:
     name: logs/application.log
   logback:
     rollingpolicy:
       max-file-size: 10MB
-      max-history: 7
+      max-history: 7          # Keep 7 days of logs

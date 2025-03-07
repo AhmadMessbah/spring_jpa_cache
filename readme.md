@@ -12,6 +12,47 @@ Requirements :
         - Check in PowerShell :
           docker --version
           docker-compose --version
+          wsl --list --verbose
+          docker-compose up -d
+          docker ps
+
+    PostgreSQL:
+          docker exec -it postgres psql -U mft -d spring_db
+          \dt
+          \q
+
+    MongoDB :
+          docker exec -it mongodb mongosh
+          show dbs
+          use spring_db_photos
+          show collections
+          exit
+
+          docker exec -it <mongo-container-name> mongosh
+          show dbs
+          use mydb
+          show collections
+          db.images.find()
+          db.images.find().pretty()
+
+    Redis:
+          docker exec -it redis redis-cli
+          GET myKey
+          SET testKey "Hello Redis"
+          GET testKey
+          exit
+
+    Log :
+          docker logs -f spring_jpa_cache
+          
+
+    Test :
+          curl -k https://localhost:8443/actuator/health
+
+    Stop Services : 
+          docker-compose down
+          docker-compose down -v
+
 
 
     Build Jar :
